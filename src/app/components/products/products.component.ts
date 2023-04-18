@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
-import { Product } from '../../models/product.model';
+// se importa CreateProductDTO, para la API-Create
+import { Product, CreateProductDTO  } from '../../models/product.model';
 
 import { StoreService } from '../../services/store.service';
 import { ProductsService } from '../../services/products.service';
@@ -59,6 +59,24 @@ export class ProductsComponent implements OnInit {
       this.toggleProductDetail();
       this.productChosen = data;
     })
+  }
+
+  createNewProduct() {
+    // se usa DTO
+    const product: CreateProductDTO = {
+      title: 'Nuevo prodcuto',
+      description: 'bla bla bla',
+      images: [`https://placeimg.com/640/480/any?random=${Math.random()}`],
+      price: 1000,
+      categoryId: 2,
+    }
+    this.productsService.create(product)
+    .subscribe(data => {
+      console.log('created', data);
+      // products, es el array
+      // inserta el producto dentro del array en la primera posicion
+      this.products.unshift(data);
+    });
   }
 
 }

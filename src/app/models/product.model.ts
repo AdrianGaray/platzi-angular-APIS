@@ -1,3 +1,4 @@
+// se renderiza con los componentes
 export interface Product {
   id: string;
   title: string;
@@ -10,4 +11,11 @@ export interface Product {
 export interface Category{
   id: string;
   name: string;
+}
+
+// se utiliza para la API - Conceptp de DTO. Y hacemos herencia
+// se omite el campo: id - category
+// Omit es de typescript
+export interface CreateProductDTO extends Omit<Product, 'id' | 'category'> {
+  categoryId: number; // especificacmos el campo categoryId
 }
