@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 // se importa CreateProductDTO, para la API-Create
-import { Product, CreateProductDTO  } from '../../models/product.model';
+// se importa UpdateProductDTO, para la API-Update
+import { Product, CreateProductDTO, UpdateProductDTO   } from '../../models/product.model';
 
 import { StoreService } from '../../services/store.service';
 import { ProductsService } from '../../services/products.service';
@@ -76,6 +77,20 @@ export class ProductsComponent implements OnInit {
       // products, es el array
       // inserta el producto dentro del array en la primera posicion
       this.products.unshift(data);
+    });
+  }
+
+  updateProduct() {
+    const changes: UpdateProductDTO = {
+      title: 'change title',
+    }
+    const id = this.productChosen.id;
+    this.productsService.update(id, changes)
+    .subscribe(data => {
+      console.log('update', data);
+      const productIndex = this.products.findIndex(item => item.id === this.productChosen.id);
+      this.products[productIndex] = data;
+      this.productChosen = data;
     });
   }
 

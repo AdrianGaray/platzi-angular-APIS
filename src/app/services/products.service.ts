@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 // se importa CreateProductDTO, para la API-Create
-import { Product, CreateProductDTO } from './../models/product.model';
+// se importa UpdateProductDTO, para la API-Update
+import { Product, CreateProductDTO, UpdateProductDTO  } from './../models/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +26,9 @@ private apiUrl = 'https://young-sands-07814.herokuapp.com/api/products';
 
   create(dto: CreateProductDTO) {
     return this.http.post<Product>(this.apiUrl, dto);
+  }
+
+  update(id: string, dto: UpdateProductDTO) {
+    return this.http.put<Product>(`${this.apiUrl}/${id}`, dto);
   }
 }

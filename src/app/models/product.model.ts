@@ -19,3 +19,7 @@ export interface Category{
 export interface CreateProductDTO extends Omit<Product, 'id' | 'category'> {
   categoryId: number; // especificacmos el campo categoryId
 }
+
+// se reutiliza CreateProductDTO, pero con los parametros opcionales
+// con Partial, indica q los atributos son opcionales, significa q le pones el signo de ? a todos los atributos
+export interface UpdateProductDTO extends Partial<CreateProductDTO> { }
