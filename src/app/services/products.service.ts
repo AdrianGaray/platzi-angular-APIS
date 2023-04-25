@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams  } from '@angular/common/http';
 
+// implementamos el operador retry
+import { retry } from 'rxjs/operators';
+
 // se importa CreateProductDTO, para la API-Create
 // se importa UpdateProductDTO, para la API-Update
 import { Product, CreateProductDTO, UpdateProductDTO  } from './../models/product.model';
@@ -10,7 +13,8 @@ import { Product, CreateProductDTO, UpdateProductDTO  } from './../models/produc
 })
 export class ProductsService {
 
-private apiUrl = 'https://young-sands-07814.herokuapp.com/api/products';
+// private apiUrl = 'https://young-sands-07814.herokuapp.com/api/products';
+private apiUrl = 'https://young-sands-07814.herokupppapp.com/api/products';
 
   constructor(
     private http: HttpClient
@@ -25,7 +29,10 @@ private apiUrl = 'https://young-sands-07814.herokuapp.com/api/products';
       params = params.set('limit', limit);
       params = params.set('offset', limit);
     }
-    return this.http.get<Product[]>(this.apiUrl, { params });
+    return this.http.get<Product[]>(this.apiUrl, { params })
+    .pipe(
+      retry(3)
+    ); // hace una trasformacion de la peticion. E implementamos el operador retry. El parametro retry nos dice cuantas veces podriamos rintentar esta peticion
   }
 
   getProduct(id: string){
