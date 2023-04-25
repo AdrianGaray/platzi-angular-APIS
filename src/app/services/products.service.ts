@@ -8,12 +8,15 @@ import { retry } from 'rxjs/operators';
 // se importa UpdateProductDTO, para la API-Update
 import { Product, CreateProductDTO, UpdateProductDTO  } from './../models/product.model';
 
+// vamos a hacer uso de ese ambiente
+import { environment } from './../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
 
-private apiUrl = '/api/products';
+private apiUrl = `${environment.API_URL}/api/products`;
 
   constructor(
     private http: HttpClient
