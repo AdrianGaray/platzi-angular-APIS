@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse, HttpStatusCode  } from '@angular/common/http';
 
 // implementamos el operador retry
-import { retry, catchError  } from 'rxjs/operators';
+// agregamos el operador map
+import { retry, catchError, map   } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 // se importa CreateProductDTO, para la API-Create
@@ -34,8 +35,14 @@ private apiUrl = `${environment.API_URL}/api/products`;
     }
     return this.http.get<Product[]>(this.apiUrl, { params })
     .pipe(
-      retry(3)
-    ); // hace una trasformacion de la peticion. E implementamos el operador retry. El parametro retry nos dice cuantas veces podriamos rintentar esta peticion
+      retry(3), // hace una trasformacion de la peticion. E implementamos el operador retry. El parametro retry nos dice cuantas veces podriamos rintentar esta peticion
+      map(products  => products.map(item => { // se empieza hacer la trasformacion
+        return {
+          ...item,
+          taxes: .19 * item.price
+        }
+      }))
+    );
   }
 
   getProduct(id: string){
@@ -72,5 +79,14 @@ private apiUrl = `${environment.API_URL}/api/products`;
     return this.http.get<Product[]>(`${this.apiUrl}`, {
       params: { limit, offset }
     })
+    .pipe(
+      retry(3),
+      map(products => products.map(item => {
+        return {
+          ...item,
+          taxes: .19 * item.price
+        }
+      }))
+    );
   }
 }
