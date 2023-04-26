@@ -4,7 +4,7 @@ import { HttpClient, HttpParams, HttpErrorResponse, HttpStatusCode  } from '@ang
 // implementamos el operador retry
 // agregamos el operador map
 import { retry, catchError, map   } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, zip  } from 'rxjs';
 
 // se importa CreateProductDTO, para la API-Create
 // se importa UpdateProductDTO, para la API-Update
@@ -42,6 +42,13 @@ private apiUrl = `${environment.API_URL}/api/products`;
           taxes: .19 * item.price
         }
       }))
+    );
+  }
+
+  fetchReadAndUpdate(id: string, dto: UpdateProductDTO) {
+    return zip(
+      this.getProduct(id),
+      this.update(id, dto)
     );
   }
 
