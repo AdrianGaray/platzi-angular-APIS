@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from './../../environments/environment';
 import { Auth } from './../models/auth.model';
+import { User } from './../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,11 @@ export class AuthService {
   }
 
   getProfile(token: string) {
-    return this.http.get(`${this.apiUrl}/profile`);
+    return this.http.get<User>(`${this.apiUrl}/profile`,{
+      headers:{
+        Authorization: `Bearer ${token}`,
+      }
+    });
   }
 
 }
