@@ -9,7 +9,7 @@ import { throwError, zip  } from 'rxjs';
 // se importa CreateProductDTO, para la API-Create
 // se importa UpdateProductDTO, para la API-Update
 import { Product, CreateProductDTO, UpdateProductDTO  } from './../models/product.model';
-
+import { checkTime } from './../interceptors/time.interceptor';
 // vamos a hacer uso de ese ambiente
 import { environment } from './../../environments/environment';
 
@@ -33,7 +33,7 @@ private apiUrl = `${environment.API_URL}/api/products`;
       params = params.set('limit', limit);
       params = params.set('offset', limit);
     }
-    return this.http.get<Product[]>(this.apiUrl, { params })
+    return this.http.get<Product[]>(this.apiUrl, { params, context: checkTime()})
     .pipe(
       retry(3), // hace una trasformacion de la peticion. E implementamos el operador retry. El parametro retry nos dice cuantas veces podriamos rintentar esta peticion
       map(products  => products.map(item => { // se empieza hacer la trasformacion
